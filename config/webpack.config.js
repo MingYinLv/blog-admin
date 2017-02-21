@@ -76,7 +76,7 @@ if (__TEST__ && !argv.watch) {
         // Pretend no assets were generated. This prevents the tests
         // from running making it clear that there were warnings.
         throw new Error(
-          stats.compilation.errors.map(err => err.message || err),
+          stats.compilation.errors.map(err => err.message || err)
         );
       }
     });
@@ -87,8 +87,7 @@ if (__DEV__) {
   debug('Enabling plugins for live development (HMR, NoErrors).');
   webpackConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-  );
+    new webpack.NoErrorsPlugin());
 } else if (__PROD__) {
   debug('Enabling plugins for production (OccurenceOrder, Dedupe & UglifyJS).');
   webpackConfig.plugins.push(
@@ -101,7 +100,7 @@ if (__DEV__) {
         warnings: false,
       },
     }),
-    new webpack.optimize.AggressiveMergingPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin()
   );
 }
 
@@ -110,8 +109,7 @@ if (!__TEST__) {
   webpackConfig.plugins.push(
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor'],
-    }),
-  );
+    }));
 }
 
 // ------------------------------------
@@ -134,13 +132,19 @@ webpackConfig.module.loaders = [{
 // We use cssnano with the postcss loader, so we tell
 // css-loader not to duplicate minimization.
 const BASE_CSS_LOADER = 'css?sourceMap&-minimize';
+const cssModulesLoader = [
+  BASE_CSS_LOADER,
+  'modules',
+  'importLoaders=1',
+  'localIdentName=[name]__[local]___[hash:base64:5]',
+].join('&');
 
 webpackConfig.module.loaders.push({
   test: /\.scss$/,
   exclude: null,
   loaders: [
     'style',
-    BASE_CSS_LOADER,
+    cssModulesLoader,
     'postcss',
     'sass?sourceMap',
   ],
@@ -180,13 +184,22 @@ webpackConfig.postcss = [
 // File loaders
 /* eslint-disable */
 webpackConfig.module.loaders.push(
-  { test: /\.woff(\?.*)?$/,  loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff' },
-  { test: /\.woff2(\?.*)?$/, loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff2' },
-  { test: /\.otf(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=font/opentype' },
-  { test: /\.ttf(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/octet-stream' },
-  { test: /\.eot(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]' },
-  { test: /\.svg(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=image/svg+xml' },
-  { test: /\.(png|jpg)$/,    loader: 'url?limit=8192' }
+  {
+    test: /\.woff(\?.*)?$/,
+    loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff'
+  },
+  {
+    test: /\.woff2(\?.*)?$/,
+    loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff2'
+  },
+  { test: /\.otf(\?.*)?$/, loader: 'file?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=font/opentype' },
+  {
+    test: /\.ttf(\?.*)?$/,
+    loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/octet-stream'
+  },
+  { test: /\.eot(\?.*)?$/, loader: 'file?prefix=fonts/&name=[path][name].[ext]' },
+  { test: /\.svg(\?.*)?$/, loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=image/svg+xml' },
+  { test: /\.(png|jpg)$/, loader: 'url?limit=8192' }
 )
 /* eslint-enable */
 
@@ -199,19 +212,18 @@ webpackConfig.module.loaders.push(
 if (!__DEV__) {
   debug('Applying ExtractTextPlugin to CSS loaders.');
   webpackConfig.module.loaders.filter(loader =>
-    loader.loaders && loader.loaders.find(name => /css/.test(name.split('?')[0])),
-  ).forEach((loader) => {
-    const first = loader.loaders[0];
-    const rest = loader.loaders.slice(1);
-    loader.loader = ExtractTextPlugin.extract(first, rest.join('!'));
-    delete loader.loaders;
-  });
+  loader.loaders && loader.loaders.find(name => /css/.test(name.split('?')[0])))
+    .forEach((loader) => {
+      const first = loader.loaders[0];
+      const rest = loader.loaders.slice(1);
+      loader.loader = ExtractTextPlugin.extract(first, rest.join('!'));
+      delete loader.loaders;
+    });
 
   webpackConfig.plugins.push(
     new ExtractTextPlugin('[name].[contenthash].css', {
       allChunks: true,
-    }),
-  );
+    }));
 }
 
 module.exports = webpackConfig;

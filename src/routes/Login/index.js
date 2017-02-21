@@ -4,12 +4,12 @@ export default store => ({
   path: 'login',
   getComponent(nextState, cb) {
     require.ensure([], (require) => {
-      const Counter = require('./containers/LoginContainer').default;
+      const Login = require('./containers/LoginContainer').default;
       const reducer = require('./modules/login').default;
 
-      injectReducer(store, { key: 'counter', reducer });
+      injectReducer(store, { key: 'login', reducer });
 
-      cb(null, Counter);
+      cb(null, Login);
     }, 'login');
   },
 });

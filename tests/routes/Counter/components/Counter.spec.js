@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { Counter } from 'routes/Counter/components/Counter';
 import { shallow } from 'enzyme';
 
-describe('(Component) Counter', () => {
+describe('(components) Counter', () => {
   let _props,
     _spies,
     _wrapper;

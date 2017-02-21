@@ -1,0 +1,26 @@
+.wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.breadcrumb {
+  margin: 12px 16px;
+}
+
+.content {
+  position: relative;
+}
+
+.main {
+  padding: 24px;
+  background: #fff;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 42px;
+  bottom: 0;
+  overflow: auto;
+}
