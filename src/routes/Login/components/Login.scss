@@ -1,11 +1,62 @@
 
 .wrap {
   position: absolute;
-  width: 800px;
-  height: 500px;
-  top: 50%;
-  margin-top: -50%;
-  left: 50%;
-  margin-left: -50%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  left: 0;
 }
 
+.blur {
+  position: absolute;
+  width: 1920px;
+  height: 1080px;
+  top: 50%;
+  left: 50%;
+  margin-left: -960px;
+  margin-top: -540px;
+  z-index: 1;
+}
+
+.mask {
+  z-index: 2;
+  position: absolute;
+  background: rgba(255, 255, 255, .3);
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.content {
+  background: rgba(41, 41, 41, .6);
+  border-radius: 5px;
+  box-shadow:1px 1px 5px #333333;
+  width: 500px;
+  padding: 15px 30px;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  z-index: 3;
+  transform: translate3d(-50%, -50%, 0);
+  h1 {
+    color: #d6d6d6;
+    letter-spacing: 5px;
+    margin-bottom: 20px;
+  }
+}
+
+.row {
+  margin-bottom: 20px;
+  input[type='text'], input[type='password'] {
+    height: 35px;
+  }
+}
+
+.btnGroup {
+  text-align: right;
+  .button {
+
+  }
+}

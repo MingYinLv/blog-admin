@@ -4,7 +4,7 @@
 
 import React, { PropTypes as T, Component } from 'react';
 import { shouldComponentUpdate } from 'react-immutable-render-mixin';
-import {} from 'antd';
+import { Input, Button } from 'antd';
 import classes from './Login.scss';
 
 class Login extends Component {
@@ -19,8 +19,19 @@ class Login extends Component {
   render() {
     return (
       <div className={classes.wrap}>
-        <div className={classes.Header}>
-          登陆
+        <img alt="我是背景" src="bg.jpg" className={classes.blur} />
+        <div className={classes.mask} />
+        <div className={classes.content}>
+          <h1>BLOG ADMIN</h1>
+          <div className={classes.row}>
+            <Input placeholder="Your Name" />
+          </div>
+          <div className={classes.row}>
+            <Input placeholder="Your Password" type="password" />
+          </div>
+          <div className={classes.btnGroup}>
+            <Button className={classes.button} size="large">登录</Button>
+          </div>
         </div>
       </div>
     );
