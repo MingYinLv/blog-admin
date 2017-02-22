@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import classes from './Page.scss';
 
-const { Content, Footer, Sider } = Layout;
+const { Content, Footer, Sider, Header } = Layout;
 const SubMenu = Menu.SubMenu;
 
 class Page extends Component {
@@ -23,66 +23,62 @@ class Page extends Component {
 
   render() {
     return (
-      <Layout className={classes.wrap}>
-        <Sider
-          collapsible
-          collapsed={this.state.collapsed}
-          onCollapse={this.onCollapse}
-        >
-          <div className="logo" />
-          <Menu theme="dark" mode={this.state.mode} defaultSelectedKeys={['6']}>
-            <SubMenu
-              key="sub1"
-              title={
-                <span>
-                  <Icon type="user" />
-                  <span className="nav-text">用户信息</span>
-                </span>
-              }
-            >
-              <Menu.Item key="1">修改信息</Menu.Item>
-              <Menu.Item key="2">退出登陆</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub2"
-              title={
-                <span>
-                  <Icon type="team" />
-                  <span className="nav-text">文章类型</span>
-                </span>
-              }
-            >
-              <Menu.Item key="4">类型列表</Menu.Item>
-              <Menu.Item key="5">添加类型</Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key="sub3"
-              title={
-                <span>
-                  <Icon type="team" />
-                  <span className="nav-text">文章管理</span>
-                </span>
-              }
-            >
-              <Menu.Item key="6">文章列表</Menu.Item>
-              <Menu.Item key="7">发布文章</Menu.Item>
-            </SubMenu>
+      <Layout style={{ height: '100%' }}>
+        <Header className="header">
+          <div className={classes.logo} />
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={['2']}
+            style={{ lineHeight: '64px' }}
+          >
+            <Menu.Item key="1">nav 1</Menu.Item>
+            <Menu.Item key="2">nav 2</Menu.Item>
+            <Menu.Item key="3">nav 3</Menu.Item>
           </Menu>
-        </Sider>
-        <Layout>
-          <Content className={classes.content}>
-            <Breadcrumb className={classes.breadcrumb}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
-            </Breadcrumb>
-            <div className={classes.main}>
-              主内容区
-            </div>
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            MingYin Lv ©2016 Created by Ant Design
-          </Footer>
-        </Layout>
+        </Header>
+        <Content className={classes.content}>
+          {/*<Breadcrumb className={classes.breadcrumb}>*/}
+            {/*<Breadcrumb.Item>Home</Breadcrumb.Item>*/}
+            {/*<Breadcrumb.Item>List</Breadcrumb.Item>*/}
+            {/*<Breadcrumb.Item>App</Breadcrumb.Item>*/}
+          {/*</Breadcrumb>*/}
+          <Layout className={classes.center}>
+            <Sider width={200} style={{ background: '#fff' }}>
+              <Menu
+                mode="inline"
+                defaultSelectedKeys={['1']}
+                defaultOpenKeys={['sub1']}
+                style={{ height: '100%' }}
+              >
+                <SubMenu key="sub1" title={<span><Icon type="user" />subnav 1</span>}>
+                  <Menu.Item key="1">option1</Menu.Item>
+                  <Menu.Item key="2">option2</Menu.Item>
+                  <Menu.Item key="3">option3</Menu.Item>
+                  <Menu.Item key="4">option4</Menu.Item>
+                </SubMenu>
+                <SubMenu key="sub2" title={<span><Icon type="laptop" />subnav 2</span>}>
+                  <Menu.Item key="5">option5</Menu.Item>
+                  <Menu.Item key="6">option6</Menu.Item>
+                  <Menu.Item key="7">option7</Menu.Item>
+                  <Menu.Item key="8">option8</Menu.Item>
+                </SubMenu>
+                <SubMenu key="sub3" title={<span><Icon type="notification" />subnav 3</span>}>
+                  <Menu.Item key="9">option9</Menu.Item>
+                  <Menu.Item key="10">option10</Menu.Item>
+                  <Menu.Item key="11">option11</Menu.Item>
+                  <Menu.Item key="12">option12</Menu.Item>
+                </SubMenu>
+              </Menu>
+            </Sider>
+            <Content style={{ padding: '0 24px', minHeight: 280 }}>
+              Content
+            </Content>
+          </Layout>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>
+          Ant Design ©2016 Created by Ant UED
+        </Footer>
       </Layout>
     );
   }
