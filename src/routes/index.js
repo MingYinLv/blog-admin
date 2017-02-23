@@ -4,12 +4,13 @@ import Home from './Home';
 import CounterRoute from './Counter';
 import LoginRoute from './Login';
 import PageRoute from './Page';
+import config from '../util/config';
 
 /*  Note: Instead of using JSX, we recommend using react-router
  PlainRoute objects to build route definitions.   */
 
 export const createRoutes = store => ({
-  path: '/',
+  path: config.publicDir,
   component: CoreLayout,
   indexRoute: Home,
   childRoutes: [

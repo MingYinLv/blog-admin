@@ -6,4 +6,5 @@ import Page from './components/Page';
 export default {
   path: 'page',
   component: Page,
+  childRoutes: [],
 };
