@@ -16,7 +16,7 @@ export const createRoutes = store => ({
   childRoutes: [
     CounterRoute(store),
     LoginRoute(store),
-    PageRoute,
+    PageRoute(store),
   ],
 });
 

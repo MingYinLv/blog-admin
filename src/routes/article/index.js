@@ -3,3 +3,13 @@
  */
 
 
+import listRoute from './list';
+import config from '../../util/config';
+
+export default store => ({
+  path: 'article',
+  indexRoute: { onEnter: (nextState, replace) => replace(`${config.publicDir}page/article/list`) },
+  childRoutes: [
+    listRoute(store),
+  ],
+});

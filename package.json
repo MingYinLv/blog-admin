@@ -82,7 +82,6 @@
     "cssnano": "^3.7.4",
     "debug": "^2.2.0",
     "extract-text-webpack-plugin": "^1.0.0",
-    "fetch": "^1.1.0",
     "file-loader": "^0.9.0",
     "fs-extra": "^1.0.0",
     "html-webpack-plugin": "^2.22.0",
@@ -106,6 +105,7 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.6",
     "webpack": "^1.12.14",
+    "whatwg-fetch": "^2.0.2",
     "yargs": "^6.3.0"
   },
   "devDependencies": {

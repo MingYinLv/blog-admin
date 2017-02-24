@@ -2,7 +2,7 @@
  * Created by MingYin Lv on 2017/2/23 下午1:31.
  */
 
-import fetch from 'fetch';
+import 'whatwg-fetch';
 import qs from 'qs';
 import { notification } from 'antd';
 import config from './config';
@@ -15,7 +15,6 @@ import config from './config';
 export default (urlSuffix, options) => {
   // URL 前缀
   const urlPrefix = config.apiAddress;
-
   // 默认参数
   const opts = {
     method: 'GET',
@@ -32,7 +31,7 @@ export default (urlSuffix, options) => {
   Object.assign(opts, options);
 
   // 处理参数
-  opts.body = qs.stringify(opts.body);
+  opts.body = opts.body ? qs.stringify(opts.body) : undefined;
 
   return fetch(urlPrefix + urlSuffix, opts)
     .then((response) => {
