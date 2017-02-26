@@ -6,11 +6,11 @@ import ListComponent from '../components/ListComponent';
 import { loadArticleList } from '../modules/articleList';
 
 const mapDispatchToProps = {
-  loadArticleList
+  loadArticleList,
 };
 
 const mapStateToProps = state => ({
-
+  dataSource: state.articleList.get('list'),
 });
 
 
