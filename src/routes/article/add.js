@@ -1,20 +1,21 @@
 /**
- * Created by MingYin Lv on 2017/2/24 下午9:57.
+ * Created by MingYin Lv on 2017/2/28 下午9:07.
  */
 
 import { injectReducer } from '../../store/reducers';
 
 export default store => ({
-  path: 'list',
+  path: 'add',
   getComponent(nextState, cb) {
     require.ensure([], (require) => {
-      const List = require('./containers/ListContainer').default;
+      const Add = require('./containers/AddContainer').default;
       const reducer = require('./modules/article').default;
 
       injectReducer(store, { key: 'article', reducer });
 
-      cb(null, List);
+      cb(null, Add);
 
     }, 'article');
   },
 });
+

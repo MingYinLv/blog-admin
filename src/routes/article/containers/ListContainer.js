@@ -3,14 +3,14 @@
  */
 import { connect } from 'react-redux';
 import ListComponent from '../components/ListComponent';
-import { loadArticleList } from '../modules/articleList';
+import { loadArticleList } from '../modules/article';
 
 const mapDispatchToProps = {
   loadArticleList,
 };
 
 const mapStateToProps = state => ({
-  dataSource: state.articleList.get('list'),
+  dataSource: state.article.get('list'),
 });
 
 

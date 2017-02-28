@@ -4,19 +4,90 @@
 import React, { Component, PropTypes as T } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { shouldComponentUpdate } from 'react-immutable-render-mixin';
+import { Link } from 'react-router';
+import config from '../../../util/config';
 import classes from './Page.scss';
 const { Content, Footer, Sider, Header } = Layout;
 const SubMenu = Menu.SubMenu;
+
+const menuConfig = [{
+  title: '信息管理',
+  icon: 'user',
+  key: 'sub1',
+  child: [{
+    title: '信息详情',
+    key: '1',
+    url: `${config.publicDir}page/person/list`,
+  }, {
+    title: '修改信息',
+    key: '2',
+    url: `${config.publicDir}page/person/edit`,
+  }],
+}, {
+  title: '类型管理',
+  icon: 'laptop',
+  key: 'sub2',
+  child: [{
+    title: '类型列表',
+    key: '11',
+    url: `${config.publicDir}page/type/list`,
+  }, {
+    title: '添加类型',
+    key: '12',
+    url: `${config.publicDir}page/type/add`,
+  }],
+}, {
+  title: '文章管理',
+  icon: 'notification',
+  key: 'sub3',
+  child: [{
+    title: '文章列表',
+    key: '21',
+    url: `${config.publicDir}page/article/list`,
+  }, {
+    title: '添加文章',
+    key: '22',
+    url: `${config.publicDir}page/article/add`,
+  }],
+}];
 
 class Page extends Component {
 
   static propTypes = {
     children: T.node,
+    location: T.object,
   };
 
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = shouldComponentUpdate.bind(this);
+    let defaultSelectKey = 0;
+    let defaultOpenKey = 0;
+    this.menu = menuConfig.map((n) => {
+      return (
+        <SubMenu key={n.key} title={<span><Icon type={n.icon} />{n.title}</span>}>
+          {
+            n.child.map((m) => {
+              if (m.url === props.location.pathname) {
+                defaultSelectKey = m.key;
+                defaultOpenKey = n.key;
+              }
+              return <Menu.Item key={m.key}><Link to={m.url}>{m.title}</Link></Menu.Item>;
+            })
+          }
+        </SubMenu>
+      );
+    });
+    this.menu = (
+      <Menu
+        mode="inline"
+        defaultSelectedKeys={[defaultSelectKey]}
+        defaultOpenKeys={[defaultOpenKey]}
+        style={{ height: '100%' }}
+      >
+        {this.menu}
+      </Menu>
+    );
   }
 
   render() {
@@ -30,7 +101,7 @@ class Page extends Component {
             defaultSelectedKeys={['2']}
             style={{ lineHeight: '64px' }}
           >
-            <Menu.Item key="1">信息管理</Menu.Item>
+            <Menu.Item key="1"><Link to={`${config.publicDir}article`}>信息管理</Link></Menu.Item>
             <Menu.Item key="2">类型列表</Menu.Item>
             <Menu.Item key="3">文章列表</Menu.Item>
             <Menu.Item key="4">退出</Menu.Item>
@@ -39,25 +110,7 @@ class Page extends Component {
         <Content className={classes.content}>
           <Layout className={classes.center}>
             <Sider width={200} style={{ background: '#fff' }}>
-              <Menu
-                mode="inline"
-                defaultSelectedKeys={['1']}
-                defaultOpenKeys={['sub1']}
-                style={{ height: '100%' }}
-              >
-                <SubMenu key="sub1" title={<span><Icon type="user" />信息管理</span>}>
-                  <Menu.Item key="1">信息详情</Menu.Item>
-                  <Menu.Item key="2">修改信息</Menu.Item>
-                </SubMenu>
-                <SubMenu key="sub2" title={<span><Icon type="laptop" />类型管理</span>}>
-                  <Menu.Item key="5">类型列表</Menu.Item>
-                  <Menu.Item key="6">添加类型</Menu.Item>
-                </SubMenu>
-                <SubMenu key="sub3" title={<span><Icon type="notification" />文章管理</span>}>
-                  <Menu.Item key="9">文章列表</Menu.Item>
-                  <Menu.Item key="10">添加文章</Menu.Item>
-                </SubMenu>
-              </Menu>
+              {this.menu}
             </Sider>
             <Content className={classes.main}>
               {this.props.children}

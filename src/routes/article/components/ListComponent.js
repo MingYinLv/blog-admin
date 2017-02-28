@@ -4,7 +4,7 @@
 
 import React, { Component, PropTypes as T } from 'react';
 import { shouldComponentUpdate } from 'react-immutable-render-mixin';
-import { Table } from 'antd';
+import { Table, Card } from 'antd';
 const { Column } = Table;
 
 class ListComponent extends Component {
@@ -44,13 +44,10 @@ class ListComponent extends Component {
   render() {
     const { dataSource } = this.props;
     return (
-      <div>
+      <Card title="文章列表">
         <Table
           dataSource={dataSource.toJS()}
           bordered
-          title={() => {
-            return <h3>文章列表</h3>;
-          }}
           rowKey="_id"
         >
           <Column
@@ -79,7 +76,7 @@ class ListComponent extends Component {
             render={this.renderOperate}
           />
         </Table>
-      </div>
+      </Card>
     );
   }
 }

@@ -12,7 +12,7 @@ import config from '../util/config';
 export const createRoutes = store => ({
   path: config.publicDir,
   component: CoreLayout,
-  indexRoute: Home,
+  indexRoute: LoginRoute(store),
   childRoutes: [
     CounterRoute(store),
     LoginRoute(store),
