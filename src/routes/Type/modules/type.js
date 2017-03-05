@@ -1,24 +1,25 @@
 /**
- * Created by MingYin Lv on 2017/2/24 下午10:23.
+ * Created by MingYin Lv on 2017/3/5 下午9:48.
  */
+
 import Immutable from 'immutable';
 import fetch from '../../../util/fetchUtil';
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const LOAD_ARTICLE_LIST = 'LOAD_ARTICLE_LIST';
+export const LOAD_TYPE_LIST = 'LOAD_TYPE_LIST';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function loadArticleList() {
+export function loadTypeList() {
   return (dispatch) => {
-    fetch('/article/list')
+    fetch('/type/list')
       .then((data) => {
         dispatch({
-          type: LOAD_ARTICLE_LIST,
+          type: LOAD_TYPE_LIST,
           data,
-        })
+        });
       });
   };
 }
@@ -28,7 +29,7 @@ export function loadArticleList() {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [LOAD_ARTICLE_LIST]: (state, action) => {
+  [LOAD_TYPE_LIST]: (state, action) => {
     return state.set('list', Immutable.fromJS(action.data));
   },
 };
@@ -45,3 +46,4 @@ export default function counterReducer(state = initialState, action) {
 
   return handler ? handler(state, action) : state;
 }
+

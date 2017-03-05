@@ -4,12 +4,14 @@
 import { connect } from 'react-redux';
 import AddComponent from '../components/AddComponent';
 import {  } from '../modules/article';
+import { loadTypeList } from '../../Type/modules/type';
 
 const mapDispatchToProps = {
+  loadTypeList,
 };
 
 const mapStateToProps = state => ({
-
+  typeList: state.cache.get('typeList'),
 });
 
 

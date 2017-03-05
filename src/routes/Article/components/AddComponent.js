@@ -23,6 +23,8 @@ marked.setOptions({
 class AddComponent extends Component {
   static propTypes = {
     form: PropTypes.object.isRequired,
+    loadTypeList: PropTypes.func.isRequired,
+    typeList: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -31,6 +33,14 @@ class AddComponent extends Component {
     this.state = {
       look: false,
     };
+  }
+
+  componentWillMount() {
+    const { loadTypeList, typeList } = this.props;
+    if (typeList.size <= 0) {
+      // 如果typeList没有缓存数据，则尝试从服务器加载
+      loadTypeList();
+    }
   }
 
   onTabsChange = (key) => {
@@ -48,6 +58,7 @@ class AddComponent extends Component {
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { typeList } = this.props;
     const inputCol = {
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
@@ -76,6 +87,11 @@ class AddComponent extends Component {
             })(
               <Select addonBefore="文章类型">
                 <Option value="0">请选择类型</Option>
+                {
+                  typeList.map((n) => {
+                    return <Option key={n.get('_id')}>{n.get('name')}</Option>;
+                  })
+                }
               </Select>,
             )}
           </FormItem>
