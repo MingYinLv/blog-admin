@@ -5,13 +5,14 @@
 import React, { PropTypes, Component } from 'react';
 import marked from 'marked';
 import { shouldComponentUpdate } from 'react-immutable-render-mixin';
-import { Card, Form, Input, Button, Tabs, Icon } from 'antd';
+import { Card, Form, Input, Button, Tabs, Icon, Select } from 'antd';
 import { highlightAuto } from 'highlight.js';
 import 'highlight.js/styles/github.css';
 import 'github-markdown-css';
 
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 marked.setOptions({
   highlight: (code) => {
@@ -47,18 +48,44 @@ class AddComponent extends Component {
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
+    const inputCol = {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 14 },
+    };
 
     return (
       <Card title="添加文章">
         <Form className="login-form">
-          <FormItem>
-            <Input addonBefore="文章标题" placeholder="文章标题" />
+          <FormItem
+            {...inputCol}
+            label="文章标题"
+          >
+            {getFieldDecorator('title', {
+              rules: [{ required: true, message: '请输入文章标题' }],
+            })(
+              <Input placeholder="文章标题" />,
+            )}
           </FormItem>
-          <FormItem>
-            <Input addonBefore="文章类型" placeholder="文章类型" />
+          <FormItem
+            {...inputCol}
+            label="文章类型"
+          >
+            {getFieldDecorator('type_id', {
+              rules: [{ required: true, message: '请选择类型' }],
+              initialValue: '0',
+            })(
+              <Select addonBefore="文章类型">
+                <Option value="0">请选择类型</Option>
+              </Select>,
+            )}
           </FormItem>
-          <FormItem>
-            <Input addonBefore="文章标签" placeholder="文章标签" />
+          <FormItem
+            {...inputCol}
+            label="文章标签"
+          >
+            {getFieldDecorator('tags', {})(
+              <Select tags placeholder="文章标签" />,
+            )}
           </FormItem>
           <Tabs
             defaultActiveKey="1"
