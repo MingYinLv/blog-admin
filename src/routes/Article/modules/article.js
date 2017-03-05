@@ -13,7 +13,7 @@ export const LOAD_ARTICLE_LIST = 'LOAD_ARTICLE_LIST';
 // ------------------------------------
 export function loadArticleList() {
   return (dispatch) => {
-    fetch('/article/list')
+    fetch('/Article/list')
       .then((data) => {
         dispatch({
           type: LOAD_ARTICLE_LIST,
