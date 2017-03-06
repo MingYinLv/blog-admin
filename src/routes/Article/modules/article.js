@@ -7,6 +7,7 @@ import fetch from '../../../util/fetchUtil';
 // Constants
 // ------------------------------------
 export const LOAD_ARTICLE_LIST = 'LOAD_ARTICLE_LIST';
+export const DELETE_ARTICLE_BY_ID = 'DELETE_ARTICLE_BY_ID';
 
 // ------------------------------------
 // Actions
@@ -18,8 +19,26 @@ export function loadArticleList() {
         dispatch({
           type: LOAD_ARTICLE_LIST,
           data,
-        })
+        });
       });
+  };
+}
+
+export function deleteArticleById(id) {
+  return (dispatch) => {
+    if (id) {
+      fetch('/article/delete', {
+        method: 'POST',
+        body: {
+          id,
+        },
+      }).then(() => {
+        dispatch({
+          type: DELETE_ARTICLE_BY_ID,
+          id,
+        });
+      });
+    }
   };
 }
 
@@ -30,6 +49,16 @@ export function loadArticleList() {
 const ACTION_HANDLERS = {
   [LOAD_ARTICLE_LIST]: (state, action) => {
     return state.set('list', Immutable.fromJS(action.data));
+  },
+  [DELETE_ARTICLE_BY_ID]: (state, action) => {
+    let list = state.get('list');
+    const index = list.findIndex((n) => {
+      return n.get('_id') === action.id;
+    });
+    if (index >= 0) {
+      list = list.remove(index);
+    }
+    return state.set('list', list);
   },
 };
 

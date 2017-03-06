@@ -11,6 +11,7 @@ class ListComponent extends Component {
   static propTypes = {
     loadArticleList: T.func.isRequired,
     dataSource: T.object.isRequired,
+    deleteArticleById: T.func.isRequired,
   };
 
   constructor(props) {
@@ -31,12 +32,19 @@ class ListComponent extends Component {
     };
   };
 
+  onDelete = ({ _id }) => {
+    const { deleteArticleById } = this.props;
+    return () => {
+      deleteArticleById(_id);
+    };
+  };
+
   renderOperate = (text, record, index) => {
     return (
       <span key={index}>
         <span onClick={this.onLook(index)}>查看</span>&nbsp;
         <span>编辑</span>&nbsp;
-        <span>删除</span>
+        <span onClick={this.onDelete(record)}>删除</span>
       </span>
     );
   };

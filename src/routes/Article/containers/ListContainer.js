@@ -3,10 +3,11 @@
  */
 import { connect } from 'react-redux';
 import ListComponent from '../components/ListComponent';
-import { loadArticleList } from '../modules/article';
+import { loadArticleList, deleteArticleById } from '../modules/article';
 
 const mapDispatchToProps = {
   loadArticleList,
+  deleteArticleById,
 };
 
 const mapStateToProps = state => ({

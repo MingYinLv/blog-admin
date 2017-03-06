@@ -2,54 +2,54 @@
  * Created by MingYin Lv on 2017/2/21 下午9:55.
  */
 import Immutable from 'immutable';
+import crypto from 'crypto';
+import fetch from '../../../util/fetchUtil';
+import { locationChange } from '../../../store/location';
 
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const COUNTER_INCREMENT = 'COUNTER_INCREMENT';
-export const COUNTER_DOUBLE_ASYNC = 'COUNTER_DOUBLE_ASYNC';
+export const LOGIN_IN = 'LOGIN_IN';
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function increment(value = 1) {
-  return {
-    type: COUNTER_INCREMENT,
-    payload: value,
-  };
-}
 
-/*  This is a thunk, meaning it is a function that immediately
- returns a function for lazy evaluation. It is incredibly useful for
- creating async actions, especially when combined with redux-thunk! */
-
-export const doubleAsync = () => {
-  return (dispatch, getState) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        dispatch({
-          type: COUNTER_DOUBLE_ASYNC,
-          payload: getState().counter,
-        });
-        resolve();
-      }, 200);
+export function loginIn({ username, password }) {
+  return (dispatch) => {
+    const md5 = crypto.createHash('md5');
+    md5.update(password);
+    fetch('/person/login', {
+      method: 'POST',
+      body: {
+        username,
+        password: md5.digest('hex'),
+      },
+    }).then(() => {
+      dispatch({
+        type: LOGIN_IN,
+        username,
+      });
+      dispatch(locationChange('/page/article/list'));
     });
   };
-};
+}
 
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-
+  [LOGIN_IN]: (state, action) => {
+    return state.set('username', action.username);
+  },
 };
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 const initialState = Immutable.fromJS({
-  value: 0,
+  username: '',
 });
 
 export default function counterReducer(state = initialState, action) {
