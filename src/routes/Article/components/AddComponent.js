@@ -100,7 +100,11 @@ class AddComponent extends Component {
             label="文章标签"
           >
             {getFieldDecorator('tags', {})(
-              <Select tags placeholder="文章标签" />,
+              <Select
+                tags
+                tokenSeparators={[',']}
+                placeholder="文章标签"
+              />,
             )}
           </FormItem>
           <Tabs

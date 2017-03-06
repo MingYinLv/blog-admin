@@ -10,6 +10,18 @@ import classes from './Page.scss';
 const { Content, Footer, Sider, Header } = Layout;
 const SubMenu = Menu.SubMenu;
 
+const createChild = ({ name, index, label }) => {
+  return [{
+    title: `${name}列表`,
+    key: `${index}1`,
+    url: `${config.publicDir}page/${label}/list`,
+  }, {
+    title: `添加${name}`,
+    key: `${index}2`,
+    url: `${config.publicDir}page/${label}/add`,
+  }];
+};
+
 const menuConfig = [{
   title: '信息管理',
   icon: 'user',
@@ -27,28 +39,17 @@ const menuConfig = [{
   title: '类型管理',
   icon: 'laptop',
   key: 'sub2',
-  child: [{
-    title: '类型列表',
-    key: '11',
-    url: `${config.publicDir}page/type/list`,
-  }, {
-    title: '添加类型',
-    key: '12',
-    url: `${config.publicDir}page/type/add`,
-  }],
+  child: createChild({ name: '类型', index: 2, label: 'type' }),
 }, {
   title: '文章管理',
   icon: 'notification',
   key: 'sub3',
-  child: [{
-    title: '文章列表',
-    key: '21',
-    url: `${config.publicDir}page/article/list`,
-  }, {
-    title: '添加文章',
-    key: '22',
-    url: `${config.publicDir}page/article/add`,
-  }],
+  child: createChild({ name: '文章', index: 3, label: 'article' }),
+}, {
+  title: '菜单管理',
+  icon: 'menu-fold',
+  key: 'sub4',
+  child: createChild({ name: '菜单', index: 4, label: 'menu' }),
 }];
 
 class Page extends Component {
