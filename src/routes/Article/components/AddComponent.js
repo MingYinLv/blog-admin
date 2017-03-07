@@ -56,6 +56,15 @@ class AddComponent extends Component {
     }
   };
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+    });
+  };
+
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { typeList } = this.props;
@@ -66,7 +75,7 @@ class AddComponent extends Component {
 
     return (
       <Card title="添加文章">
-        <Form className="login-form">
+        <Form className="login-form" onSubmit={this.handleSubmit}>
           <FormItem
             {...inputCol}
             label="文章标题"
@@ -135,7 +144,9 @@ class AddComponent extends Component {
               />
             </TabPane>
           </Tabs>
-          <Button>保存</Button>
+          <FormItem>
+            <Button htmlType="submit">保存</Button>
+          </FormItem>
         </Form>
       </Card>
     );

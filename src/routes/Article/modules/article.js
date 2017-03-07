@@ -2,11 +2,14 @@
  * Created by MingYin Lv on 2017/2/24 下午10:23.
  */
 import Immutable from 'immutable';
+import { notification } from 'antd';
 import fetch from '../../../util/fetchUtil';
+
 // ------------------------------------
 // Constants
 // ------------------------------------
 export const LOAD_ARTICLE_LIST = 'LOAD_ARTICLE_LIST';
+export const ADD_ARTICLE = 'ADD_ARTICLE';
 export const DELETE_ARTICLE_BY_ID = 'DELETE_ARTICLE_BY_ID';
 
 // ------------------------------------
@@ -37,6 +40,10 @@ export function deleteArticleById(id) {
           type: DELETE_ARTICLE_BY_ID,
           id,
         });
+        notification.success({
+          message: '删除成功',
+          description: '删除成功',
+        })
       });
     }
   };
