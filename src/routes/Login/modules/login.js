@@ -3,8 +3,9 @@
  */
 import Immutable from 'immutable';
 import crypto from 'crypto';
+import { browserHistory } from 'react-router';
+import { notification } from 'antd';
 import fetch from '../../../util/fetchUtil';
-import { locationChange } from '../../../store/location';
 
 // ------------------------------------
 // Constants
@@ -30,7 +31,11 @@ export function loginIn({ username, password }) {
         type: LOGIN_IN,
         username,
       });
-      dispatch(locationChange('/page/article/list'));
+      notification.success({
+        message: '登陆成功',
+        description: '登陆成功',
+      });
+      browserHistory.push('/page/article/list');
     });
   };
 }

@@ -56,7 +56,7 @@ export default (urlSuffix, options) => {
       // 弹出消息提示
       const errorText = ex.message ? ex.message : currentErrorText;
       notification.error({
-        message: '网络错误',
+        message: '请求失败',
         description: errorText,
       });
       throw ex;
