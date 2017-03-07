@@ -7,6 +7,8 @@ import { shouldComponentUpdate } from 'react-immutable-render-mixin';
 import { Input, Button, Form } from 'antd';
 import classes from './Login.scss';
 
+const FormItem = Form.Item;
+
 class Login extends Component {
 
   static propTypes = {
@@ -19,7 +21,8 @@ class Login extends Component {
     this.shouldComponentUpdate = shouldComponentUpdate.bind(this);
   }
 
-  onSubmit = () => {
+  onSubmit = (e) => {
+    e.preventDefault();
     const { getFieldValue } = this.props.form;
     const { loginIn } = this.props;
     const username = getFieldValue('username');
@@ -37,29 +40,38 @@ class Login extends Component {
         <img alt="我是背景" src="bg.jpg" className={classes.blur} />
         <div className={classes.mask} />
         <div className={classes.content}>
-          <h1>BLOG ADMIN</h1>
-          <div className={classes.row}>
-            {getFieldDecorator('username', {
-              rules: [{ required: true, message: '请输入用户名' }],
-            })(
-              <Input placeholder="Your Name" />,
-            )}
-          </div>
-          <div className={classes.row}>
-            {getFieldDecorator('password', {
-              rules: [{ required: true, message: '请输入密码' }],
-            })(
-              <Input placeholder="Your Password" type="password" />,
-            )}
-          </div>
-          <div className={classes.btnGroup}>
-            <Button onClick={this.onSubmit} className={classes.button} size="large">登录</Button>
-          </div>
+          <Form onSubmit={this.onSubmit}>
+            <h1>BLOG ADMIN</h1>
+            <div className={classes.row}>
+              <FormItem>
+                {getFieldDecorator('username', {
+                  rules: [
+                    { required: true, message: '请输入用户名' },
+                  ],
+                })(
+                  <Input placeholder="Your Name" />,
+                )}
+              </FormItem>
+            </div>
+            <div className={classes.row}>
+              <FormItem>
+                {getFieldDecorator('password', {
+                  rules: [{ required: true, message: '请输入密码' }],
+                })(
+                  <Input placeholder="Your Password" type="password" />,
+                )}
+              </FormItem>
+            </div>
+            <div className={classes.btnGroup}>
+              <FormItem>
+                <Button htmlType="submit" className={classes.button} size="large">登录</Button>
+              </FormItem>
+            </div>
+          </Form>
         </div>
       </div>
     );
   }
-
 }
 
 export default Form.create()(Login);

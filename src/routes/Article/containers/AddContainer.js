@@ -3,15 +3,17 @@
  */
 import { connect } from 'react-redux';
 import AddComponent from '../components/AddComponent';
-import {  } from '../modules/article';
+import { addArticle } from '../modules/article';
 import { loadTypeList } from '../../Type/modules/type';
 
 const mapDispatchToProps = {
   loadTypeList,
+  addArticle,
 };
 
 const mapStateToProps = state => ({
   typeList: state.cache.get('typeList'),
+  addBtnDisable: state.article.get('addBtnDisable'),
 });
 
 

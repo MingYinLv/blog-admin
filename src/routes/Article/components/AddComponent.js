@@ -24,7 +24,9 @@ class AddComponent extends Component {
   static propTypes = {
     form: PropTypes.object.isRequired,
     loadTypeList: PropTypes.func.isRequired,
+    addArticle: PropTypes.func.isRequired,
     typeList: PropTypes.object.isRequired,
+    addBtnDisable: PropTypes.bool.isRequired,
   };
 
   constructor(props) {
@@ -58,16 +60,33 @@ class AddComponent extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
+
+    const { validateFields, getFieldsValue } = this.props.form;
+    const { addArticle } = this.props;
+
+    let validated = true;
+    validateFields((err) => {
+      if (err && validated) {
+        validated = false;
       }
     });
+
+    if (validated) {
+      addArticle(getFieldsValue());
+    }
+  };
+
+  checkType = (rule, value, callback) => {
+    if (value === '0') {
+      callback('请选择类型');
+    } else {
+      callback();
+    }
   };
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { typeList } = this.props;
+    const { typeList, addBtnDisable } = this.props;
     const inputCol = {
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
@@ -91,7 +110,10 @@ class AddComponent extends Component {
             label="文章类型"
           >
             {getFieldDecorator('type_id', {
-              rules: [{ required: true, message: '请选择类型' }],
+              rules: [
+                { required: true, message: '请选择类型' },
+                { validator: this.checkType },
+              ],
               initialValue: '0',
             })(
               <Select addonBefore="文章类型">
@@ -108,7 +130,7 @@ class AddComponent extends Component {
             {...inputCol}
             label="文章标签"
           >
-            {getFieldDecorator('tags', {})(
+            {getFieldDecorator('tag', {})(
               <Select
                 tags
                 tokenSeparators={[',']}
@@ -145,7 +167,11 @@ class AddComponent extends Component {
             </TabPane>
           </Tabs>
           <FormItem>
-            <Button htmlType="submit">保存</Button>
+            <Button htmlType="submit" disabled={addBtnDisable}>
+              {
+                addBtnDisable ? '保存中...' : '保存'
+              }
+            </Button>
           </FormItem>
         </Form>
       </Card>
