@@ -11,7 +11,9 @@ class ListComponent extends Component {
   static propTypes = {
     loadArticleList: T.func.isRequired,
     dataSource: T.object.isRequired,
+    typeList: T.object.isRequired,
     deleteArticleById: T.func.isRequired,
+    loadTypeList: T.func.isRequired,
   };
 
   constructor(props) {
@@ -23,7 +25,11 @@ class ListComponent extends Component {
   }
 
   componentWillMount() {
-    this.props.loadArticleList();
+    const { loadArticleList, loadTypeList, typeList } = this.props;
+    loadArticleList();
+    if (typeList.size <= 0) {
+      loadTypeList();
+    }
   }
 
   onLook = (index) => {
@@ -50,11 +56,19 @@ class ListComponent extends Component {
   };
 
   render() {
-    const { dataSource } = this.props;
+    const { dataSource, typeList } = this.props;
+    const typeMap = {};
+    typeList.forEach((n) => {
+      typeMap[n.get('_id')] = n.get('name');
+    });
+    const newData = dataSource.map((n) => {
+      return n.set('type', typeMap[n.get('type_id')] || '未知');
+    });
+
     return (
       <Card title="文章列表">
         <Table
-          dataSource={dataSource.toJS()}
+          dataSource={newData.toJS()}
           bordered
           rowKey="_id"
         >
@@ -77,6 +91,11 @@ class ListComponent extends Component {
             title="访问统计"
             dataIndex="accessTotal"
             key="accessTotal"
+          />
+          <Column
+            title="分类"
+            dataIndex="type"
+            key="type"
           />
           <Column
             title="操作"
