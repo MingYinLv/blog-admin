@@ -3,8 +3,10 @@
  */
 
 import React, { Component, PropTypes as T } from 'react';
+import moment from 'moment';
 import { shouldComponentUpdate } from 'react-immutable-render-mixin';
 import { Table, Card } from 'antd';
+
 const { Column } = Table;
 
 class ListComponent extends Component {
@@ -48,9 +50,9 @@ class ListComponent extends Component {
   renderOperate = (text, record, index) => {
     return (
       <span key={index}>
-        <span onClick={this.onLook(index)}>查看</span>&nbsp;
-        <span>编辑</span>&nbsp;
-        <span onClick={this.onDelete(record)}>删除</span>
+        <a onClick={this.onLook(index)}>查看</a>&nbsp;
+        <a>编辑</a>&nbsp;
+        <a onClick={this.onDelete(record)}>删除</a>
       </span>
     );
   };
@@ -62,7 +64,8 @@ class ListComponent extends Component {
       typeMap[n.get('_id')] = n.get('name');
     });
     const newData = dataSource.map((n) => {
-      return n.set('type', typeMap[n.get('type_id')] || '未知');
+      return n.set('type', typeMap[n.get('type_id')] || '未知')
+        .set('updateDate', moment(n.get('updateDate'), 'x').format('YYYY-MM-DD HH:mm'));
     });
 
     return (

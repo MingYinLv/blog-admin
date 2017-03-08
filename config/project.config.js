@@ -50,6 +50,7 @@ const config = {
     'react-redux',
     'react-router',
     'redux',
+    'moment'
   ],
 
   // ----------------------------------
