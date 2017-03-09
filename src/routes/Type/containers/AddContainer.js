@@ -11,6 +11,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = state => ({
   addBtnDisable: state.type.get('addBtnDisable'),
+  list: state.type.get('list'),
 });
 
 

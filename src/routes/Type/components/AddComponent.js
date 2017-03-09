@@ -12,6 +12,8 @@ const FormItem = Form.Item;
 class AddComponent extends Component {
   static propTypes = {
     form: PropTypes.object.isRequired,
+    list: PropTypes.object.isRequired,
+    route: PropTypes.object.isRequired,
     addType: PropTypes.func.isRequired,
     addBtnDisable: PropTypes.bool.isRequired,
   };

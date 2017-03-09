@@ -4,8 +4,8 @@
 
 import { injectReducer } from '../../store/reducers';
 
-export default store => ({
-  path: 'add',
+export default (store, add = true) => ({
+  path: add ? 'add' : 'edit/:id',
   getComponent(nextState, cb) {
     require.ensure([], (require) => {
       const Add = require('./containers/AddContainer').default;

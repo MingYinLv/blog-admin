@@ -82,8 +82,8 @@ class Page extends Component {
     this.menu = (
       <Menu
         mode="inline"
-        defaultSelectedKeys={[defaultSelectKey]}
-        defaultOpenKeys={[defaultOpenKey]}
+        defaultSelectedKeys={[defaultSelectKey || '1']}
+        defaultOpenKeys={[defaultOpenKey || 'sub1']}
         style={{ height: '100%' }}
       >
         {this.menu}
