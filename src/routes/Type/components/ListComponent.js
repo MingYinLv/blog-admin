@@ -5,12 +5,14 @@
 import React, { Component, PropTypes as T } from 'react';
 import { shouldComponentUpdate } from 'react-immutable-render-mixin';
 import { Table, Card } from 'antd';
+
 const { Column } = Table;
 
 class ListComponent extends Component {
   static propTypes = {
     dataSource: T.object.isRequired,
     loadTypeList: T.func.isRequired,
+    deleteTypeById: T.func.isRequired,
   };
 
   constructor(props) {
@@ -31,11 +33,19 @@ class ListComponent extends Component {
     };
   };
 
+  onDelete = ({ _id }) => {
+    const { deleteTypeById } = this.props;
+    return () => {
+      deleteTypeById(_id);
+    };
+  };
+
   renderOperate = (text, record, index) => {
     return (
       <span key={index}>
-        <span>编辑</span>&nbsp;
-        <span>删除</span>
+        <a onClick={this.onLook(index)}>查看</a>&nbsp;
+        <a>编辑</a>&nbsp;
+        <a onClick={this.onDelete(record)}>删除</a>
       </span>
     );
   };

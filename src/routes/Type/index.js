@@ -3,6 +3,7 @@
  */
 
 import listRoute from './list';
+import addRoute from './add';
 import config from '../../util/config';
 
 export default store => ({
@@ -10,6 +11,7 @@ export default store => ({
   indexRoute: { onEnter: (nextState, replace) => replace(`${config.publicDir}page/type/list`) },
   childRoutes: [
     listRoute(store),
+    addRoute(store),
   ],
 });
 

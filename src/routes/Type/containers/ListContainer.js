@@ -4,10 +4,11 @@
 
 import { connect } from 'react-redux';
 import ListComponent from '../components/ListComponent';
-import { loadTypeList } from '../modules/type';
+import { loadTypeList, deleteTypeById } from '../modules/type';
 
 const mapDispatchToProps = {
   loadTypeList,
+  deleteTypeById,
 };
 
 const mapStateToProps = state => ({
