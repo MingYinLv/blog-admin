@@ -5,8 +5,9 @@ import React, { Component, PropTypes as T } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { shouldComponentUpdate } from 'react-immutable-render-mixin';
 import { Link } from 'react-router';
-import config from '../../../util/config';
+import { createUrl } from '../../../util/pathUtil';
 import classes from './Page.scss';
+
 const { Content, Footer, Sider, Header } = Layout;
 const SubMenu = Menu.SubMenu;
 
@@ -14,11 +15,11 @@ const createChild = ({ name, index, label }) => {
   return [{
     title: `${name}列表`,
     key: `${index}1`,
-    url: `${config.publicDir}page/${label}/list`,
+    url: `${createUrl(`/page/${label}/list`)}`,
   }, {
     title: `添加${name}`,
     key: `${index}2`,
-    url: `${config.publicDir}page/${label}/add`,
+    url: `${createUrl(`page/${label}/add`)}`,
   }];
 };
 
@@ -29,11 +30,11 @@ const menuConfig = [{
   child: [{
     title: '信息详情',
     key: '1',
-    url: `${config.publicDir}page/person/list`,
+    url: `${createUrl('page/person/list')}`,
   }, {
     title: '修改信息',
     key: '2',
-    url: `${config.publicDir}page/person/edit`,
+    url: `${createUrl('page/person/edit')}`,
   }],
 }, {
   title: '类型管理',
@@ -102,7 +103,7 @@ class Page extends Component {
             defaultSelectedKeys={['2']}
             style={{ lineHeight: '64px' }}
           >
-            <Menu.Item key="1"><Link to={`${config.publicDir}article`}>信息管理</Link></Menu.Item>
+            <Menu.Item key="1"><Link to={`${createUrl('article')}`}>信息管理</Link></Menu.Item>
             <Menu.Item key="2">类型列表</Menu.Item>
             <Menu.Item key="3">文章列表</Menu.Item>
             <Menu.Item key="4">退出</Menu.Item>
