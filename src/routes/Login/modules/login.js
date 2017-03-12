@@ -11,6 +11,8 @@ import fetch from '../../../util/fetchUtil';
 // Constants
 // ------------------------------------
 export const LOGIN_IN = 'LOGIN_IN';
+export const LOGIN_TRUE = 'LOGIN_TRUE';
+export const LOGIN_FALSE = 'LOGIN_FALSE';
 
 // ------------------------------------
 // Actions
@@ -36,6 +38,21 @@ export function loginIn({ username, password }) {
         description: '登陆成功',
       });
       browserHistory.push('/page/article/list');
+    });
+  };
+}
+
+export function checkLogin() {
+  return (dispatch) => {
+    fetch('/person/check').then(() => {
+      dispatch({
+        type: LOGIN_TRUE,
+      });
+    }).catch(() => {
+      dispatch({
+        type: LOGIN_FALSE,
+      });
+      browserHistory.push('/');
     });
   };
 }

@@ -49,6 +49,7 @@ export default (urlSuffix, options) => {
         return data.data;
       } else if (data.code === 4) {
         window.location.href = config.publicDir;
+        throw new Error('请登陆');
       }
       throw new Error(data.msg);
     })

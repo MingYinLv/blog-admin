@@ -4,7 +4,13 @@
 
 import Immutable from 'immutable';
 import { LOAD_TYPE_LIST, DELETE_TYPE_BY_ID, ADD_TYPE } from './Type/modules/type';
+import { LOGIN_IN, LOGIN_TRUE, LOGIN_FALSE } from './Login/modules/login';
 
+export const LOGIN_STATUS = {
+  PENDING: 'pending',
+  SUCCESS: 'success',
+  FAILED: 'failed',
+};
 
 const ACTION_HANDLERS = {
   [LOAD_TYPE_LIST]: (state, action) => {
@@ -27,13 +33,24 @@ const ACTION_HANDLERS = {
     const list = state.get('typeList');
     return state.set('typeList', list.push(Immutable.fromJS(data)));
   },
+  [LOGIN_IN]: (state) => {
+    return state.set('loginStatus', LOGIN_STATUS.SUCCESS);
+  },
+  [LOGIN_TRUE]: (state) => {
+    return state.set('loginStatus', LOGIN_STATUS.SUCCESS);
+  },
+  [LOGIN_FALSE]: (state) => {
+    return state.set('loginStatus', LOGIN_STATUS.FAILED);
+  },
 };
+
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 const initialState = Immutable.fromJS({
   typeList: [],
+  loginStatus: LOGIN_STATUS.PENDING,
 });
 
 export default function counterReducer(state = initialState, action) {

@@ -2,11 +2,14 @@
  * Created by MingYin Lv on 2017/2/21 下午10:24.
  */
 import React, { Component, PropTypes as T } from 'react';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon, Spin } from 'antd';
 import { shouldComponentUpdate } from 'react-immutable-render-mixin';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import { createUrl } from '../../../util/pathUtil';
 import classes from './Page.scss';
+import { LOGIN_STATUS } from '../../../routes/cacheReducer';
+import { checkLogin } from '../../../routes/Login/modules/login';
 
 const { Content, Footer, Sider, Header } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -56,8 +59,10 @@ const menuConfig = [{
 class Page extends Component {
 
   static propTypes = {
-    children: T.node,
-    location: T.object,
+    children: T.node.isRequired,
+    location: T.object.isRequired,
+    loginStatus: T.string.isRequired,
+    dispatch: T.func.isRequired,
   };
 
   constructor(props) {
@@ -92,39 +97,52 @@ class Page extends Component {
     );
   }
 
+  componentWillMount() {
+    this.props.dispatch(checkLogin());
+  }
+
   render() {
     return (
-      <Layout style={{ height: '100%' }}>
-        <Header className="header">
-          <div className={classes.logo} />
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            defaultSelectedKeys={['2']}
-            style={{ lineHeight: '64px' }}
-          >
-            <Menu.Item key="1"><Link to={`${createUrl('article')}`}>信息管理</Link></Menu.Item>
-            <Menu.Item key="2">类型列表</Menu.Item>
-            <Menu.Item key="3">文章列表</Menu.Item>
-            <Menu.Item key="4">退出</Menu.Item>
-          </Menu>
-        </Header>
-        <Content className={classes.content}>
-          <Layout className={classes.center}>
-            <Sider width={200} style={{ background: '#fff' }}>
-              {this.menu}
-            </Sider>
-            <Content className={classes.main}>
-              {this.props.children}
-            </Content>
-          </Layout>
-        </Content>
-        <Footer className={classes.footer}>
-          MingYin Lv ©2016 Created by Ant Design
-        </Footer>
-      </Layout>
+      <div style={{ height: '100%' }}>
+        {
+          LOGIN_STATUS.SUCCESS === this.props.loginStatus ?
+            <Layout style={{ height: '100%' }}>
+              <Header className="header">
+                <div className={classes.logo} />
+                <Menu
+                  theme="dark"
+                  mode="horizontal"
+                  defaultSelectedKeys={['2']}
+                  style={{ lineHeight: '64px' }}
+                >
+                  <Menu.Item key="1"><Link to={`${createUrl('article')}`}>信息管理</Link></Menu.Item>
+                  <Menu.Item key="2">类型列表</Menu.Item>
+                  <Menu.Item key="3">文章列表</Menu.Item>
+                  <Menu.Item key="4">退出</Menu.Item>
+                </Menu>
+              </Header>
+              <Content className={classes.content}>
+                <Layout className={classes.center}>
+                  <Sider width={200} style={{ background: '#fff' }}>
+                    {this.menu}
+                  </Sider>
+                  <Content className={classes.main}>
+                    {this.props.children}
+                  </Content>
+                </Layout>
+              </Content>
+              <Footer className={classes.footer}>
+                MingYin Lv ©2016 Created by Ant Design
+              </Footer>
+            </Layout> : <Spin size="large" />
+        }
+      </div>
     );
   }
 }
 
-export default Page;
+const mapStateToProps = state => ({
+  loginStatus: state.cache.get('loginStatus'),
+});
+
+export default connect(mapStateToProps)(Page);
