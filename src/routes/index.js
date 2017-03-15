@@ -1,10 +1,10 @@
 // We only need to import the modules necessary for initial render
 import CoreLayout from '../layouts/CoreLayout';
-import Home from './Home';
 import CounterRoute from './Counter';
 import LoginRoute from './Login';
 import PageRoute from './Page';
 import config from '../util/config';
+import { createUrl } from '../util/pathUtil';
 
 /*  Note: Instead of using JSX, we recommend using react-router
  PlainRoute objects to build route definitions.   */
@@ -12,7 +12,7 @@ import config from '../util/config';
 export const createRoutes = store => ({
   path: config.publicDir,
   component: CoreLayout,
-  indexRoute: LoginRoute(store),
+  indexRoute: { onEnter: (nextState, replace) => replace(`${createUrl('page')}`) },
   childRoutes: [
     CounterRoute(store),
     LoginRoute(store),
