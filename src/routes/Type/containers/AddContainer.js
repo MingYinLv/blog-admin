@@ -3,10 +3,11 @@
  */
 import { connect } from 'react-redux';
 import AddComponent from '../components/AddComponent';
-import { addType } from '../modules/type';
+import { addType, editType } from '../modules/type';
 
 const mapDispatchToProps = {
   addType,
+  editType,
 };
 
 const mapStateToProps = state => ({

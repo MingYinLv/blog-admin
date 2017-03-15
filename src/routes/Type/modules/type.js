@@ -12,8 +12,10 @@ import fetch from '../../../util/fetchUtil';
 export const LOAD_TYPE_LIST = 'LOAD_TYPE_LIST';
 export const DELETE_TYPE_BY_ID = 'DELETE_TYPE_BY_ID';
 export const ADD_TYPE = 'ADD_TYPE';
+export const EDIT_TYPE = 'EDIT_TYPE';
 export const ADD_TYPE_BUTTON_DISABLE = 'ADD_TYPE_BUTTON_DISABLE';
 export const ADD_TYPE_BUTTON_ENABLE = 'ADD_TYPE_BUTTON_ENABLE';
+export const FIND_TYPE_BY_ID = 'FIND_TYPE_BY_ID';
 
 // ------------------------------------
 // Actions
@@ -27,6 +29,18 @@ export function loadTypeList() {
           data,
         });
       });
+  };
+}
+
+
+export function findTypeById(id) {
+  return (dispatch) => {
+    fetch(`/type/get/${id}`).then((data) => {
+      dispatch({
+        type: FIND_TYPE_BY_ID,
+        data,
+      });
+    });
   };
 }
 
@@ -67,6 +81,32 @@ export function addType(type) {
       notification.success({
         message: '添加成功',
         description: '类型添加成功',
+      });
+    }).catch(() => {
+      dispatch({
+        type: ADD_TYPE_BUTTON_ENABLE,
+      });
+    });
+  };
+}
+
+export function editType(type) {
+  return (dispatch) => {
+    dispatch({
+      type: ADD_TYPE_BUTTON_DISABLE,
+    });
+    fetch('/type/edit', {
+      method: 'POST',
+      body: type,
+    }).then((data) => {
+      dispatch({
+        type: ADD_TYPE,
+        data,
+      });
+      browserHistory.push('/page/type/list');
+      notification.success({
+        message: '修改成功',
+        description: '类型修改成功',
       });
     }).catch(() => {
       dispatch({
