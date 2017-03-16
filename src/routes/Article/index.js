@@ -13,5 +13,6 @@ export default store => ({
   childRoutes: [
     listRoute(store),
     addRoute(store),
+    addRoute(store, false),
   ],
 });

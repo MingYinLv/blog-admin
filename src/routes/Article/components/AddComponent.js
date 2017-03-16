@@ -9,6 +9,7 @@ import { Card, Form, Input, Button, Tabs, Icon, Select } from 'antd';
 import { highlightAuto } from 'highlight.js';
 import 'highlight.js/styles/github.css';
 import 'github-markdown-css';
+import fetch from '../../../util/fetchUtil';
 
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
@@ -25,7 +26,9 @@ class AddComponent extends Component {
     form: PropTypes.object.isRequired,
     loadTypeList: PropTypes.func.isRequired,
     addArticle: PropTypes.func.isRequired,
+    editArticle: PropTypes.func.isRequired,
     typeList: PropTypes.object.isRequired,
+    params: PropTypes.object.isRequired,
     addBtnDisable: PropTypes.bool.isRequired,
   };
 
@@ -38,10 +41,35 @@ class AddComponent extends Component {
   }
 
   componentWillMount() {
-    const { loadTypeList, typeList } = this.props;
+    const { loadTypeList, typeList, params, form } = this.props;
     if (typeList.size <= 0) {
       // 如果typeList没有缓存数据，则尝试从服务器加载
       loadTypeList();
+    }
+
+    if (params.id) {
+      // 编辑会有id参数
+      fetch(`/article/get/${params.id}`).then(({ _id, ...other }) => {
+        const { setFieldsValue } = form;
+        setFieldsValue({
+          id: _id,
+          ...other,
+        });
+      });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { form, typeList } = nextProps;
+    const { setFieldsValue, getFieldValue } = form;
+    const isType = typeList.some((n) => {
+      return getFieldValue('type_id') === n.get('_id');
+    });
+
+    if (!isType && getFieldValue('type_id') !== '0') {
+      setFieldsValue({
+        type_id: '0',
+      });
     }
   }
 
@@ -62,7 +90,7 @@ class AddComponent extends Component {
     e.preventDefault();
 
     const { validateFields, getFieldsValue } = this.props.form;
-    const { addArticle } = this.props;
+    const { addArticle, editArticle, params } = this.props;
 
     let validated = true;
     validateFields((err) => {
@@ -72,7 +100,11 @@ class AddComponent extends Component {
     });
 
     if (validated) {
-      addArticle(getFieldsValue());
+      if (params.id) {
+        editArticle(getFieldsValue());
+      } else {
+        addArticle(getFieldsValue());
+      }
     }
   };
 
@@ -92,9 +124,13 @@ class AddComponent extends Component {
       wrapperCol: { span: 14 },
     };
 
+
     return (
       <Card title="添加文章">
         <Form className="login-form" onSubmit={this.handleSubmit}>
+          {getFieldDecorator('id')(
+            <Input type="hidden" />,
+          )}
           <FormItem
             {...inputCol}
             label="文章标题"

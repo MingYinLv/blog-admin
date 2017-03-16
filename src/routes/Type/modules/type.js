@@ -100,7 +100,7 @@ export function editType(type) {
       body: type,
     }).then((data) => {
       dispatch({
-        type: ADD_TYPE,
+        type: EDIT_TYPE,
         data,
       });
       browserHistory.push('/page/type/list');
@@ -141,10 +141,11 @@ const ACTION_HANDLERS = {
   [ADD_TYPE_BUTTON_ENABLE]: (state) => {
     return state.set('addBtnDisable', false);
   },
-  [ADD_TYPE]: (state, action) => {
-    const { data } = action;
-    const list = state.get('list');
-    return state.set('list', list.push(Immutable.fromJS(data))).set('addBtnDisable', false);
+  [ADD_TYPE]: (state) => {
+    return state.set('addBtnDisable', false);
+  },
+  [EDIT_TYPE]: (state) => {
+    return state.set('addBtnDisable', false);
   },
 };
 

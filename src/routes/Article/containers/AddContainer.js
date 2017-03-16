@@ -3,12 +3,13 @@
  */
 import { connect } from 'react-redux';
 import AddComponent from '../components/AddComponent';
-import { addArticle } from '../modules/article';
+import { addArticle, editArticle } from '../modules/article';
 import { loadTypeList } from '../../Type/modules/type';
 
 const mapDispatchToProps = {
   loadTypeList,
   addArticle,
+  editArticle,
 };
 
 const mapStateToProps = state => ({

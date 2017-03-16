@@ -22,14 +22,8 @@ class AddComponent extends Component {
   constructor(props) {
     super(props);
     this.shouldComponentUpdate = shouldComponentUpdate.bind(this);
-    let editId = 0;
-    const { params } = props;
-    if (params.id) {
-      editId = params.id;
-    }
     this.state = {
       look: false,
-      editId,
     };
   }
 

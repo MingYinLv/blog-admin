@@ -11,6 +11,7 @@ import fetch from '../../../util/fetchUtil';
 // ------------------------------------
 export const LOAD_ARTICLE_LIST = 'LOAD_ARTICLE_LIST';
 export const ADD_ARTICLE = 'ADD_ARTICLE';
+export const EDIT_ARTICLE = 'EDIT_ARTICLE';
 export const DELETE_ARTICLE_BY_ID = 'DELETE_ARTICLE_BY_ID';
 export const ADD_ARTICLE_BUTTON_DISABLE = 'ADD_ARTICLE_BUTTON_DISABLE';
 export const ADD_ARTICLE_BUTTON_ENABLE = 'ADD_ARTICLE_BUTTON_ENABLE';
@@ -79,6 +80,32 @@ export function addArticle(article) {
   };
 }
 
+export function editArticle(article) {
+  return (dispatch) => {
+    dispatch({
+      type: ADD_ARTICLE_BUTTON_DISABLE,
+    });
+    fetch('/article/edit', {
+      method: 'POST',
+      body: article,
+    }).then((data) => {
+      dispatch({
+        type: EDIT_ARTICLE,
+        data,
+      });
+      browserHistory.push('/page/article/list');
+      notification.success({
+        message: '修改成功',
+        description: '文章修改成功',
+      });
+    }).catch(() => {
+      dispatch({
+        type: ADD_ARTICLE_BUTTON_ENABLE,
+      });
+    });
+  };
+}
+
 
 // ------------------------------------
 // Action Handlers
@@ -99,10 +126,11 @@ const ACTION_HANDLERS = {
     }
     return state.set('list', list);
   },
-  [ADD_ARTICLE]: (state, action) => {
-    const { data } = action;
-    const list = state.get('list');
-    return state.set('list', list.push(Immutable.fromJS(data))).set('addBtnDisable', false);
+  [ADD_ARTICLE]: (state) => {
+    return state.set('addBtnDisable', false);
+  },
+  [EDIT_ARTICLE]: (state) => {
+    return state.set('addBtnDisable', false);
   },
   [ADD_ARTICLE_BUTTON_DISABLE]: (state) => {
     return state.set('addBtnDisable', true);
