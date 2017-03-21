@@ -33,7 +33,7 @@ const menuConfig = [{
   child: [{
     title: '信息详情',
     key: '1',
-    url: `${createUrl('page/person/list')}`,
+    url: `${createUrl('page/person')}`,
   }, {
     title: '修改信息',
     key: '2',

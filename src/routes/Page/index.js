@@ -4,6 +4,8 @@
 import Page from './components/Page';
 import ArticleRoute from '../Article';
 import TypeRoute from '../Type';
+import PersonRoute from '../Person';
+
 
 export default store => ({
   path: 'page',
@@ -11,5 +13,6 @@ export default store => ({
   childRoutes: [
     ArticleRoute(store),
     TypeRoute(store),
+    PersonRoute(store),
   ],
 });
