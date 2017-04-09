@@ -46,7 +46,10 @@ class Person extends Component {
   handleChange = (info) => {
     if (info.file.status === 'done') {
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl }));
+      this.setState({
+        imageUrl: `${config.apiAddress}${info.file.response.data.url}`,
+      });
+      // getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl }));
     }
   };
 
