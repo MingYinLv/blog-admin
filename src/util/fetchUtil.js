@@ -6,6 +6,7 @@ import 'whatwg-fetch';
 import qs from 'qs';
 import { notification } from 'antd';
 import config from './config';
+import { createUrl } from './pathUtil';
 
 /**
  * @param {String} urlSuffix URL后缀(接口名称)
@@ -47,8 +48,8 @@ export default (urlSuffix, options) => {
       // 服务端状态 OK
       if (data.error_code === 0) {
         return data.data;
-      } else if (data.code === 4) {
-        window.location.href = config.publicDir;
+      } else if (data.error_code === 4) {
+        window.location.href = createUrl('/login');
         throw new Error('请登陆');
       }
       throw new Error(data.msg);
