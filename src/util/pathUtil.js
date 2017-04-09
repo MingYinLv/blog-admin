@@ -5,8 +5,8 @@
 import path from 'path';
 import config from './config';
 
-export const createUrl = (url) => {
-  return path.join(config.publicDir, url);
+export const createUrl = (url, prefix = config.publicDir) => {
+  return path.join(prefix, url);
 };
 
 export const join = path.join;

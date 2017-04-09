@@ -4,10 +4,31 @@
 
 import React, { PropTypes, Component } from 'react';
 import { shouldComponentUpdate } from 'react-immutable-render-mixin';
-import { Card, Form, Input, Radio, Button } from 'antd';
+import { Card, Form, Input, Radio, Button, Upload, Icon, message } from 'antd';
+import classes from './Person.scss';
+import { join } from '../../../util/pathUtil';
+import config from '../../../util/config';
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
+
+function beforeUpload(file) {
+  const isJPG = file.type === 'image/jpeg';
+  if (!isJPG) {
+    message.error('You can only upload JPG file!');
+  }
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    message.error('Image must smaller than 2MB!');
+  }
+  return isJPG && isLt2M;
+}
+
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
 
 class Person extends Component {
   static propTypes = {
@@ -16,20 +37,44 @@ class Person extends Component {
 
   constructor(props) {
     super(props);
-    this.shouldComponentUpdate = shouldComponentUpdate.bind(this)
+    this.shouldComponentUpdate = shouldComponentUpdate.bind(this);
+    this.state = {
+      imageUrl: '',
+    };
   }
 
-  render(){
+  handleChange = (info) => {
+    if (info.file.status === 'done') {
+      // Get this url from response in real world.
+      getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl }));
+    }
+  };
+
+  render() {
     const { getFieldDecorator } = this.props.form;
+    const { imageUrl } = this.state;
     const inputCol = {
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
     };
-
     return (
       <Card
         title="账户信息"
       >
+        <Upload
+          className={classes['avatar-uploader']}
+          name="uploadFile"
+          showUploadList={false}
+          action={`${config.apiAddress}/upload`}
+          beforeUpload={beforeUpload}
+          onChange={this.handleChange}
+        >
+          {
+            imageUrl ?
+              <img src={imageUrl} alt="" className={classes.avatar} /> :
+              <Icon type="plus" className={classes['avatar-uploader-trigger']} />
+          }
+        </Upload>
         <Form>
           <FormItem
             {...inputCol}
@@ -77,8 +122,7 @@ class Person extends Component {
             {...inputCol}
             label="公司"
           >
-            {getFieldDecorator('name', {
-            })(
+            {getFieldDecorator('name', {})(
               <Input placeholder="公司" />,
             )}
           </FormItem>
@@ -86,7 +130,7 @@ class Person extends Component {
             style={{ marginLeft: '17%' }}
           >
             <Button htmlType="submit">
-                保存
+              保存
             </Button>
           </FormItem>
         </Form>
