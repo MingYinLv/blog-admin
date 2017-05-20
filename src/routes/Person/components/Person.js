@@ -13,21 +13,15 @@ const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
 
 function beforeUpload(file) {
-  const isJPG = file.type === 'image/jpeg';
+  const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png');
   if (!isJPG) {
-    message.error('You can only upload JPG file!');
+    message.error('只支持上传jpg和png图片!');
   }
   const isLt2M = file.size / 1024 / 1024 < 2;
   if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
+    message.error('图片最大为2MB!');
   }
   return isJPG && isLt2M;
-}
-
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
 }
 
 class Person extends Component {
@@ -45,11 +39,9 @@ class Person extends Component {
 
   handleChange = (info) => {
     if (info.file.status === 'done') {
-      // Get this url from response in real world.
       this.setState({
         imageUrl: `${config.apiAddress}${info.file.response.data.url}`,
       });
-      // getBase64(info.file.originFileObj, imageUrl => this.setState({ imageUrl }));
     }
   };
 
@@ -105,7 +97,7 @@ class Person extends Component {
             {...inputCol}
             label="年龄"
           >
-            {getFieldDecorator('name', {
+            {getFieldDecorator('age', {
               rules: [{ required: true, message: '年龄不能为空' }],
             })(
               <Input placeholder="年龄" />,
@@ -115,7 +107,7 @@ class Person extends Component {
             {...inputCol}
             label="邮箱"
           >
-            {getFieldDecorator('name', {
+            {getFieldDecorator('email', {
               rules: [{ required: true, message: '邮箱不能为空' }],
             })(
               <Input placeholder="邮箱" />,
@@ -125,7 +117,7 @@ class Person extends Component {
             {...inputCol}
             label="公司"
           >
-            {getFieldDecorator('name', {})(
+            {getFieldDecorator('company', {})(
               <Input placeholder="公司" />,
             )}
           </FormItem>

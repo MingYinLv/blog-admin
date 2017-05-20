@@ -34,10 +34,6 @@ const menuConfig = [{
     title: '信息详情',
     key: '1',
     url: `${createUrl('page/person')}`,
-  }, {
-    title: '修改信息',
-    key: '2',
-    url: `${createUrl('page/person/edit')}`,
   }],
 }, {
   title: '类型管理',
